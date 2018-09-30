@@ -302,8 +302,9 @@ public class PictureDialog extends Stage implements MenuUtil.MenuCallback{
 
 	@Override
 	public void changeImageSize() {
-		// TODO Auto-generated method stub
 		
+		InputImageSizeDialog dialog = new InputImageSizeDialog();
+		dialog.open();
 	}
 	
 }
