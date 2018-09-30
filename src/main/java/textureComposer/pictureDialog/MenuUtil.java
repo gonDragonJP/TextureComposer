@@ -18,9 +18,12 @@ public class MenuUtil {
 	
 		void setBackGroundColor(BackGroundColor color);
 		void setFrameGrid(OnOrOff sw);
+		
 		void openImageFile();
 		void addSeqCutFrames();
 		void saveImage();
+		
+		void changeImageSize();
 	}
 	
 	private static MenuCallback menuCallback;
@@ -30,12 +33,13 @@ public class MenuUtil {
 		menuCallback = callable;
 		MenuBar menuBar = new MenuBar();
 		
-		String[] menuNames = {"File","Setting"};
+		String[] menuNames = {"File","Image","Setting"};
 		Menu[] menus = generateMenuArray(menuNames);
 		menuBar.getMenus().addAll(menus);
 		
 		setFileMenu(menus[0]);
-		setSettingMenu(menus[1]);
+		setImageMenu(menus[1]);
+		setSettingMenu(menus[2]);
 	
 		return menuBar;
 	}
@@ -49,6 +53,15 @@ public class MenuUtil {
 		menuItems[0].setOnAction(event->menuCallback.openImageFile());
 		menuItems[1].setOnAction(event->menuCallback.addSeqCutFrames());
 		menuItems[2].setOnAction(event->menuCallback.saveImage());
+	}
+	
+	private static void setImageMenu(Menu menu){
+		
+		String[] menuItemNames = {"Change Image Size"};
+		MenuItem[] menuItems = generateMenuItemArray(menuItemNames);
+		menu.getItems().addAll(menuItems);
+		
+		menuItems[0].setOnAction(event->menuCallback.changeImageSize());
 	}
 	
 	private static void setSettingMenu(Menu menu){
