@@ -22,8 +22,10 @@ public class InputImageSizeDialog {
 		setGrid();
 	}
 	
-	public void open() {
+	public void open(double posX, double posY) {
 		
+		dialog.setX(posX);
+		dialog.setY(posY);
 		dialog.show();
 	}
 	

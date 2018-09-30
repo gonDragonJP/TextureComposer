@@ -304,7 +304,8 @@ public class PictureDialog extends Stage implements MenuUtil.MenuCallback{
 	public void changeImageSize() {
 		
 		InputImageSizeDialog dialog = new InputImageSizeDialog();
-		dialog.open();
+
+		dialog.open(this.getX()-100, this.getY()-100);
 	}
 	
 }
