@@ -6,15 +6,24 @@ import java.lang.reflect.Field;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class SceneUtil {
+	
+	public static TextField textTextureID = new TextField();
+	public static TextField textPictureName = new TextField();
+	public static TextField textGridSizeX = new TextField();
+	public static TextField textGridSizeY = new TextField();
+	
+	public static Button storeButton = new Button("Store To DB");
 	
 	private static MainApp mainApp;
 	
@@ -23,6 +32,22 @@ public class SceneUtil {
 		mainApp = argApp;
 		
 		set(stage);
+	}
+	
+	public static void setTextField(TextureData data){
+		
+		String picSizePS =""; 
+		
+		if(data.image !=null){
+			
+			picSizePS = String.format(" ( %d * %d )", 
+					(int)data.image.getWidth(), (int)data.image.getHeight());
+		}
+		
+		textTextureID.setText(String.valueOf(data.textureID));
+		textPictureName.setText(data.pictureName  + picSizePS);
+		textGridSizeX.setText(String.valueOf(data.gridSizeX));
+		textGridSizeY.setText(String.valueOf(data.gridSizeY));
 	}
 	
 	private static void set(Stage stage){
@@ -52,13 +77,13 @@ public class SceneUtil {
 		Label label2= new Label("GridSizeX");
 		Label label3= new Label("GridSizeY");
 		
-		mainApp.textTextureID.setPrefWidth(50);
-		mainApp.textPictureName.setMaxWidth(250);
-		mainApp.textPictureName.setMinWidth(250);
-		mainApp.textPictureName.setEditable(false);
-		mainApp.textGridSizeX.setMaxWidth(50);
-		mainApp.textGridSizeY.setMaxWidth(50);
-		mainApp.storeButton.setPrefWidth(100);
+		textTextureID.setPrefWidth(50);
+		textPictureName.setMaxWidth(250);
+		textPictureName.setMinWidth(250);
+		textPictureName.setEditable(false);
+		textGridSizeX.setMaxWidth(50);
+		textGridSizeY.setMaxWidth(50);
+		storeButton.setPrefWidth(100);
 		
 		VBox box = new VBox();
 		box.setSpacing(10);
@@ -70,18 +95,18 @@ public class SceneUtil {
 		HBox box3 = new HBox();
 		box3.setSpacing(10);
 		box3.getChildren().addAll(
-				mainApp.textTextureID,
-				mainApp.textPictureName, 
-				mainApp.textGridSizeX, 
-				mainApp.textGridSizeY,
-				mainApp.storeButton
+				textTextureID,
+				textPictureName, 
+				textGridSizeX, 
+				textGridSizeY,
+				storeButton
 				);
 		
-		mainApp.textTextureID.setOnAction(event->mainApp.setTexID());
-		mainApp.textGridSizeX.setOnAction(event->mainApp.setGridSize());
-		mainApp.textGridSizeY.setOnAction(event->mainApp.setGridSize());
+		textTextureID.setOnAction(event->mainApp.setTexID());
+		textGridSizeX.setOnAction(event->mainApp.setGridSize());
+		textGridSizeY.setOnAction(event->mainApp.setGridSize());
 		
-		mainApp.storeButton.setOnAction(event->mainApp.storeToDB());
+		storeButton.setOnAction(event->mainApp.storeToDB());
 	
 		box.getChildren().addAll(box2, box3);
 		
@@ -107,8 +132,7 @@ public class SceneUtil {
 	
 	private static Pane genTablePane(){
 		
-		TableModule  tableModule = mainApp.getTableModule();
-		TableView<TextureData> tableView = tableModule.getView();
+		TableView<TextureData> tableView = mainApp.tableModule.getView();
 		Pane pane = new Pane();
 		
 		tableView.setPrefWidth(550);
@@ -132,7 +156,7 @@ public class SceneUtil {
 		}
 		
 		tableView.getColumns().addAll(columns);
-		tableView.setOnMouseClicked(event -> tableModule.onMouseClicked(event));
+		tableView.setOnMouseClicked(event -> mainApp.tableModule.onMouseClicked(event));
 		
 		pane.getChildren().add(tableView);
 		

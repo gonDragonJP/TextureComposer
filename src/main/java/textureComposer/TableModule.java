@@ -17,8 +17,7 @@ public class TableModule {
 	private TableView<TextureData> tableView = new TableView<>();	
 	private ArrayList<TextureData> dataList = new ArrayList<>();
 	
-	private Callback<Void, Void> cbOfDeleteTexData;
-	private Callback<TextureData, Void> cbOfSelectRow; 
+	private TableActionable tableActionable;
 	
 	public TableModule(){
 		
@@ -29,14 +28,9 @@ public class TableModule {
 		return tableView;
 	}
 	
-	public void setDeleteTexDataListener(Callback<Void, Void> callback){
+	public void setTableActionable(TableActionable actionable){
 		
-		cbOfDeleteTexData =callback;
-	}
-	
-	public void setSelectRowListener(Callback<TextureData, Void> callback){
-		
-		cbOfSelectRow =callback;
+		this.tableActionable = actionable;
 	}
 	
 	public void setTable(String databasePath){
@@ -68,7 +62,7 @@ public class TableModule {
 		
 		TextureData data = tableView.getSelectionModel().getSelectedItem();
 		
-		cbOfSelectRow.call(data);
+		tableActionable.selectRow(data);
 	}
 	
 	private void openEventContextMenu(){
@@ -80,7 +74,7 @@ public class TableModule {
 		String[] menuText = {"delete"};
 		
 		for(int i=0; i<menuItem.length; i++) menuItem[i].setText(menuText[i]);
-		menuItem[0].setOnAction(e -> cbOfDeleteTexData.call(null));
+		menuItem[0].setOnAction(e -> tableActionable.deleteTexData());
 	
 		contextMenu.getItems().addAll(menuItem);
 		tableView.setContextMenu(contextMenu);

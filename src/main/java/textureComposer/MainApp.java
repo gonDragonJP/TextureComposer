@@ -22,16 +22,7 @@ public class MainApp extends Application
 	private final String imageDir = databaseDir + "image\\";
 
 	private PictureDialog pictureDialog;
-	
-	public TextField textTextureID = new TextField();
-	public TextField textPictureName = new TextField();
-	public TextField textGridSizeX = new TextField();
-	public TextField textGridSizeY = new TextField();
-	
-	public Button storeButton = new Button("Store To DB");
-	
-	public TableModule tableModule = new TableModule();
-	
+	public TableModule tableModule;
 	
 	public static void main(String[] args){
 		
@@ -41,26 +32,13 @@ public class MainApp extends Application
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		SceneUtil.setScene(this, stage);
 		setPictureDialog(stage);
+		setTableModule();
 		
-		tableModule.setTable(databasePath);
-		tableModule.setDeleteTexDataListener(e->{
-					deleteSelectedTexData();
-					return null;
-					});
-		tableModule.setSelectRowListener(e->{
-					selectDBTableRow(e);
-					return null;
-					});
+		SceneUtil.setScene(this, stage);
 		
 		stage.show();
 		pictureDialog.show();
-	}
-	
-	public TableModule getTableModule(){
-		
-		return tableModule;
 	}
 	
 	private void setPictureDialog(Stage stage){
@@ -68,27 +46,36 @@ public class MainApp extends Application
 		Window wnd = stage;
 		pictureDialog = new PictureDialog(wnd);
 		
-		setTextField(pictureDialog.getTextureData());
+		SceneUtil.setTextField(pictureDialog.getTextureData());
 		
 		pictureDialog.setChangedImageListener(
-				picdata -> {setTextField(picdata); return null;}
+				picdata -> {SceneUtil.setTextField(picdata); return null;}
 		);
 	}
 	
-	private void setTextField(TextureData data){
+	private void setTableModule(){
 		
-		String picSizePS =""; 
+		tableModule = new TableModule();
+	
+		tableModule.setTable(databasePath);
 		
-		if(data.image !=null){
+		TableActionable actionable = new TableActionable(){
+
+			@Override
+			public void deleteTexData() {
+				
+				deleteSelectedTexData();
+			}
+
+			@Override
+			public void selectRow(TextureData textureData) {
+				
+				selectDBTableRow(textureData);
+			}
 			
-			picSizePS = String.format(" ( %d * %d )", 
-					(int)data.image.getWidth(), (int)data.image.getHeight());
-		}
+		};
 		
-		textTextureID.setText(String.valueOf(data.textureID));
-		textPictureName.setText(data.pictureName  + picSizePS);
-		textGridSizeX.setText(String.valueOf(data.gridSizeX));
-		textGridSizeY.setText(String.valueOf(data.gridSizeY));
+		tableModule.setTableActionable(actionable);
 	}
 	
 	private void deleteSelectedTexData(){
@@ -103,21 +90,21 @@ public class MainApp extends Application
 		pictureDialog.show();
 		
 		pictureDialog.setGridSize(selectedData.gridSizeX, selectedData.gridSizeY);
-		setTextField(selectedData);
+		SceneUtil.setTextField(selectedData);
 		// picDlg::validateImage()で一回呼び出せれますがグリッドを変更したため再度呼び出します
 	}
 	
 	public void setTexID(){
 		
-		int texID = Integer.valueOf(textTextureID.getText());
+		int texID = Integer.valueOf(SceneUtil.textTextureID.getText());
 		
 		pictureDialog.setTexID(texID);
 	}
 	
 	public void setGridSize(){
 		
-		int gridSizeX = Integer.valueOf(textGridSizeX.getText());
-		int gridSizeY = Integer.valueOf(textGridSizeY.getText());
+		int gridSizeX = Integer.valueOf(SceneUtil.textGridSizeX.getText());
+		int gridSizeY = Integer.valueOf(SceneUtil.textGridSizeY.getText());
 		
 		pictureDialog.setGridSize(gridSizeX, gridSizeY);
 	}
