@@ -1,4 +1,4 @@
-package textureComposer.pictureDialog.seqReadDialog;
+ package textureComposer.pictureDialog.seqReadDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -138,35 +138,6 @@ public class SeqReadDialog extends Stage {
 		grid.add(insertButton, 2, 3);
 		
 		return grid;
-	}
-
-	private VBox getTextFieldBox(){
-		
-		setTextField();
-		
-		Label label0 = new Label("Frame Size");
-		Label label1 = new Label("Cut Left");
-		Label label2 = new Label("Cut Top");
-		Label label3 = new Label("Insert Frame");
-		
-		HBox labelBox = new HBox();
-		labelBox.setSpacing(30);
-		labelBox.getChildren().addAll(label0, textFrameSize);
-	
-		HBox fieldBox = new HBox();
-		fieldBox.setSpacing(20);
-		fieldBox.getChildren().addAll(label1, textCutLeft, label2, textCutTop);
-		
-		HBox insertBox = new HBox();
-		insertBox.setSpacing(20);
-		insertBox.getChildren().addAll(label3, textInsertFrame, insertButton);
-	
-		VBox vBox = new VBox();
-		vBox.setPadding(new Insets(10));
-		vBox.setSpacing(10);
-		vBox.getChildren().addAll(labelBox, fieldBox, insertBox);
-		
-		return vBox;
 	}
 
 	private void setTextField() {
