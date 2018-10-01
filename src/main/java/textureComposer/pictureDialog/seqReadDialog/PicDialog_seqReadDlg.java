@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Pair;
 import textureComposer.pictureDialog.MenuUtil.BackGroundColor;
 
 
@@ -43,6 +44,11 @@ public class PicDialog_seqReadDlg extends Stage {
 		fitDialogSize(canvasSizeX, canvasSizeY);
 		
 		drawScreen();
+	}
+	
+	public Pair<Integer, Integer> getCanvasSize(){
+	
+		return new Pair<>(canvasSizeX, canvasSizeY);
 	}
 	
 	public void pasteCutImage(WritableImage dstImg, int x, int y){

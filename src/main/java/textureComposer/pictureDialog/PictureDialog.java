@@ -305,6 +305,18 @@ public class PictureDialog extends Stage implements MenuUtil.MenuCallback {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void clearImage() {
+		
+		for(int x=0; x<image.getWidth(); x++) {
+			for(int y=0; y<image.getHeight(); y++) {
+				
+				image.getPixelWriter().setArgb(x, y, getBackGroundArgb());
+			}
+		}
+		drawScreen();
+	}
 
 	@Override
 	public void changeImageSize() {
@@ -340,21 +352,28 @@ public class PictureDialog extends Stage implements MenuUtil.MenuCallback {
 					argb = reader.getArgb(x, y);
 				}catch(Exception e) {
 					
-					switch(backGroundColor) {
-					
-					case Black:
-						argb = 0xFF000000;	break;
-					case White:
-						argb = 0xFFFFFFFF;	break;
-					case Checkerd:
-					default:
-						argb = 0x00000000;
-					}
+					argb = getBackGroundArgb();
 				}
 				newImage.getPixelWriter().setArgb(x, y, argb);
 			}
 		}
 		return newImage;
 	}
-
+	
+	private int getBackGroundArgb() {
+		
+		int argb;
+		
+		switch(backGroundColor) {
+		
+		case Black:
+			argb = 0xFF000000;	break;
+		case White:
+			argb = 0xFFFFFFFF;	break;
+		case Checkerd:
+		default:
+			argb = 0x00000000;
+		}
+		return argb;
+	}
 }

@@ -21,12 +21,14 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Callback;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import textureComposer.TextureData;
@@ -42,6 +44,7 @@ public class SeqReadDialog extends Stage {
 	private TextField textCutTop = new TextField();
 	private TextField textInsertFrame = new TextField();
 	
+	private Button jumpCenterButton = new Button("Jump Center");
 	private Button insertButton = new Button("Insert");
 	
 	private int gridSizeX, gridSizeY, cutLeft, cutTop, insertFrame;
@@ -105,10 +108,36 @@ public class SeqReadDialog extends Stage {
 	private void setScene() {
 
 		VBox vbox = new VBox();
-		vbox.getChildren().addAll(getTextFieldBox(), tableView);
+		//vbox.getChildren().addAll(getTextFieldBox(), tableView);
+		vbox.getChildren().addAll(getGridPane(), tableView);
 
 		Scene scene = new Scene(vbox);
 		this.setScene(scene);
+	}
+	
+	private GridPane getGridPane() {
+		
+		setTextField();
+		
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(10,10,10,10));
+		
+		grid.add(new Label("Frame Size"),0,0);
+		grid.add(new Label("Cut Left"),0,1);
+		grid.add(new Label("Cut Top"),0,2);
+		grid.add(new Label("Insert Frame"),0,3);
+		
+		grid.add(textFrameSize, 1, 0);
+		grid.add(textCutLeft, 1, 1);
+		grid.add(textCutTop, 1, 2);
+		grid.add(textInsertFrame, 1, 3);
+		
+		grid.add(jumpCenterButton, 2, 2);
+		grid.add(insertButton, 2, 3);
+		
+		return grid;
 	}
 
 	private VBox getTextFieldBox(){
@@ -142,7 +171,7 @@ public class SeqReadDialog extends Stage {
 
 	private void setTextField() {
 
-		textFrameSize.setPrefWidth(150);
+		textFrameSize.setPrefWidth(70);
 		textFrameSize.setEditable(false);
 		textCutLeft.setPrefWidth(50);
 		textCutTop.setPrefWidth(50);
@@ -162,7 +191,16 @@ public class SeqReadDialog extends Stage {
 		textInsertFrame.setOnKeyReleased(event->validateInsertFrame());
 		textInsertFrame.setTextFormatter(formatters[2]);
 		
+		jumpCenterButton.setOnAction(event->jumpPicCenter());
 		insertButton.setOnAction(event->insertExecute());
+	}
+	
+	private void jumpPicCenter() {
+		
+		Pair<Integer, Integer> picSize = picDlg.getCanvasSize();
+		textCutLeft.setText(String.valueOf((picSize.getKey()-gridSizeX)/2));
+		textCutTop.setText(String.valueOf((picSize.getValue()-gridSizeY)/2));
+		validateCutPos();
 	}
 	
 	private void validateCutPos(){

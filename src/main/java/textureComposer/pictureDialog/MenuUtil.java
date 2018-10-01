@@ -23,6 +23,7 @@ public class MenuUtil {
 		void addSeqCutFrames();
 		void saveImage();
 		
+		void clearImage();
 		void changeImageSize();
 	}
 	
@@ -57,11 +58,12 @@ public class MenuUtil {
 	
 	private static void setImageMenu(Menu menu){
 		
-		String[] menuItemNames = {"Change Image Size"};
+		String[] menuItemNames = {"Clear Image","Change Image Size"};
 		MenuItem[] menuItems = generateMenuItemArray(menuItemNames);
 		menu.getItems().addAll(menuItems);
 		
-		menuItems[0].setOnAction(event->menuCallback.changeImageSize());
+		menuItems[0].setOnAction(event->menuCallback.clearImage());
+		menuItems[1].setOnAction(event->menuCallback.changeImageSize());
 	}
 	
 	private static void setSettingMenu(Menu menu){
