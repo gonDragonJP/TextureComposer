@@ -10,9 +10,12 @@ public class DatabaseAccess {
 	
 	private String filePath;
 	
-	public DatabaseAccess(String filePath){
+	private String tableName;
+	
+	public DatabaseAccess(String filePath, String tableName){
 		
 		this.filePath = filePath;
+		this.tableName = tableName;
 	}
 	
 	public void setTexDataList(ArrayList<TextureData> texDataList){
@@ -22,7 +25,7 @@ public class DatabaseAccess {
 		String sql;
 		ResultSet resultSet;
 		
-		sql = "select * from TextureData order by textureID;";
+		sql = "select * from "+tableName+" order by textureID;";
 		resultSet = SQLiteManager.getResultSet(sql);
 		 
 		try {
@@ -87,7 +90,7 @@ public class DatabaseAccess {
 	
 	private void add(TextureData textureData){
 		
-		String sql = "insert into TextureData values(";
+		String sql = "insert into "+tableName+" values(";
 		
 		sql += "NULL,";
 		sql += String.valueOf(textureData.textureID) +",";
@@ -122,7 +125,7 @@ public class DatabaseAccess {
 		
 		SQLiteManager.initDatabase(filePath);
 		
-		String sql = "delete from TextureData where ID=";
+		String sql = "delete from "+tableName+" where ID=";
 		
 		sql += String.valueOf(textureData.getDatabaseID());
 		

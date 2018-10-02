@@ -20,6 +20,9 @@ public class MainApp extends Application
 	private final String databaseDir = ".\\texDataBase\\";
 	private final String databasePath = databaseDir + "texDB.db";
 	private final String imageDir = databaseDir + "image\\";
+	
+	private final String basicTableName ="TextureTable_Stage_";
+	public int editStage = 1;
 
 	private PictureDialog pictureDialog;
 	public TableModule tableModule;
@@ -32,19 +35,19 @@ public class MainApp extends Application
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		setPictureDialog(stage);
-		setTableModule();
+		pictureDialog = new PictureDialog(stage);
+		tableModule = new TableModule();
 		
 		SceneUtil.setScene(this, stage);
+		
+		setPictureDialog();
+		setTableModule();
 		
 		stage.show();
 		pictureDialog.show();
 	}
 	
-	private void setPictureDialog(Stage stage){
-	
-		Window wnd = stage;
-		pictureDialog = new PictureDialog(wnd);
+	private void setPictureDialog(){
 		
 		SceneUtil.setTextField(pictureDialog.getTextureData());
 		
@@ -53,11 +56,17 @@ public class MainApp extends Application
 		);
 	}
 	
+	public String getEditTableName(){
+		
+		return basicTableName + String.valueOf(editStage);
+	}
+	
 	private void setTableModule(){
 		
-		tableModule = new TableModule();
+		DatabaseAccess dbAccess = 
+				new DatabaseAccess(databasePath, getEditTableName());
 	
-		tableModule.setTable(databasePath);
+		tableModule.setTable(dbAccess);
 		
 		TableActionable actionable = new TableActionable(){
 
@@ -80,7 +89,10 @@ public class MainApp extends Application
 	
 	private void deleteSelectedTexData(){
 		
-		tableModule.deleteSelectedTexData(databasePath);
+		DatabaseAccess dbAccess = 
+				new DatabaseAccess(databasePath, getEditTableName());
+		
+		tableModule.deleteSelectedTexData(dbAccess);
 	}
 	
 	private void selectDBTableRow(TextureData selectedData){
@@ -111,12 +123,13 @@ public class MainApp extends Application
 	
 	public void storeToDB(){
 		
-		DatabaseAccess dbAccess = new DatabaseAccess(databasePath);
+		DatabaseAccess dbAccess = 
+				new DatabaseAccess(databasePath, getEditTableName());
 		
 		TextureData storeData = pictureDialog.getTextureData();
 		dbAccess.addTextureData(storeData);
 		
-		tableModule.setTable(databasePath);
+		tableModule.setTable(dbAccess);
 	}
 
 	@Override

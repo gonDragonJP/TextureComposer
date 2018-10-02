@@ -22,6 +22,7 @@ public class SceneUtil {
 	public static TextField textPictureName = new TextField();
 	public static TextField textGridSizeX = new TextField();
 	public static TextField textGridSizeY = new TextField();
+	public static TextField textTableName = new TextField();
 	
 	public static Button storeButton = new Button("Store To DB");
 	
@@ -48,6 +49,7 @@ public class SceneUtil {
 		textPictureName.setText(data.pictureName  + picSizePS);
 		textGridSizeX.setText(String.valueOf(data.gridSizeX));
 		textGridSizeY.setText(String.valueOf(data.gridSizeY));
+		textTableName.setText(mainApp.getEditTableName());
 	}
 	
 	private static void set(Stage stage){
@@ -60,7 +62,7 @@ public class SceneUtil {
 		
 		VBox box = new VBox();
 		box.setPadding(new Insets(30));
-		box.setSpacing(30);
+		box.setSpacing(10);
 		box.getChildren().addAll(genPicDataBox(), genTablePane());
 		
 		
@@ -77,12 +79,16 @@ public class SceneUtil {
 		Label label2= new Label("GridSizeX");
 		Label label3= new Label("GridSizeY");
 		
+		Label label4= new Label("DB_TableName");
+		
 		textTextureID.setPrefWidth(50);
 		textPictureName.setMaxWidth(250);
 		textPictureName.setMinWidth(250);
 		textPictureName.setEditable(false);
 		textGridSizeX.setMaxWidth(50);
 		textGridSizeY.setMaxWidth(50);
+		textTableName.setPrefWidth(250);
+		textTableName.setEditable(false);
 		storeButton.setPrefWidth(100);
 		
 		VBox box = new VBox();
@@ -107,8 +113,12 @@ public class SceneUtil {
 		textGridSizeY.setOnAction(event->mainApp.setGridSize());
 		
 		storeButton.setOnAction(event->mainApp.storeToDB());
+		
+		HBox box4 = new HBox();
+		box4.setSpacing(10);
+		box4.getChildren().addAll(label4, textTableName);
 	
-		box.getChildren().addAll(box2, box3);
+		box.getChildren().addAll(box2, box3, box4);
 		
 		return box;
 	}

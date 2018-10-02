@@ -33,11 +33,10 @@ public class TableModule {
 		this.tableActionable = actionable;
 	}
 	
-	public void setTable(String databasePath){
+	public void setTable(DatabaseAccess dbAccess){
 		
 		dataList.clear();
 		
-		DatabaseAccess dbAccess = new DatabaseAccess(databasePath);
 		dbAccess.setTexDataList(dataList);
 		
 		ObservableList<TextureData> tableData = FXCollections.observableArrayList();
@@ -80,13 +79,12 @@ public class TableModule {
 		tableView.setContextMenu(contextMenu);
 	}
 	
-	public void deleteSelectedTexData(String databasePath){
+	public void deleteSelectedTexData(DatabaseAccess dbAccess){
 		
 		TextureData data = tableView.getSelectionModel().getSelectedItem();
 		
-		DatabaseAccess dbAccess = new DatabaseAccess(databasePath);
 		dbAccess.deleteTextureData(data);
 		
-		setTable(databasePath);
+		setTable(dbAccess);
 	}
 }
