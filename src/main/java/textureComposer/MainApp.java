@@ -22,7 +22,7 @@ public class MainApp extends Application
 	private final String imageDir = databaseDir + "image\\";
 	
 	private final String basicTableName ="TextureTable_Stage_";
-	public int editStage = 1;
+	public int editStage = 2;
 
 	private PictureDialog pictureDialog;
 	public TableModule tableModule;
