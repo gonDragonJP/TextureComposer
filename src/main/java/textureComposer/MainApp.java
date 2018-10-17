@@ -56,6 +56,13 @@ public class MainApp extends Application
 		);
 	}
 	
+	public void changeEditStage(int stage){
+		
+		editStage = stage;
+		SceneUtil.textTableName.setText(getEditTableName());
+		setTableModule();
+	}
+	
 	public String getEditTableName(){
 		
 		return basicTableName + String.valueOf(editStage);

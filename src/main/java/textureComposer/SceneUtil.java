@@ -4,9 +4,12 @@ package textureComposer;
 import java.lang.reflect.Field;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -18,12 +21,15 @@ import javafx.stage.Stage;
 
 public class SceneUtil {
 	
+	private static int stageNumber = 2;
+	
 	public static TextField textTextureID = new TextField();
 	public static TextField textPictureName = new TextField();
 	public static TextField textGridSizeX = new TextField();
 	public static TextField textGridSizeY = new TextField();
 	public static TextField textTableName = new TextField();
 	
+	public static ChoiceBox<String> stageChoiceBox = new ChoiceBox<>();
 	public static Button storeButton = new Button("Store To DB");
 	
 	private static MainApp mainApp;
@@ -117,10 +123,38 @@ public class SceneUtil {
 		HBox box4 = new HBox();
 		box4.setSpacing(10);
 		box4.getChildren().addAll(label4, textTableName);
-	
+		addStageChoiceBox(box4);
+		
+		
 		box.getChildren().addAll(box2, box3, box4);
 		
 		return box;
+	}
+	
+	private static void addStageChoiceBox(Pane pane){
+		
+		for(int i=0; i<stageNumber; i++){
+			
+			stageChoiceBox.getItems().add(
+					"stage_"+String.valueOf(i+1)
+					);
+		}
+		
+		stageChoiceBox.getSelectionModel().selectedItemProperty().addListener(
+				new ChangeListener<String>(){
+
+					@Override
+					public void changed(ObservableValue<? extends String> observable, String oldValue,
+							String newValue) {
+						
+						int stage = Integer.valueOf(newValue.substring(newValue.length()-1));
+						mainApp.changeEditStage(stage);
+					}}
+				);
+		
+		stageChoiceBox.getSelectionModel().select(0); //choiceboxÇÃ0î‘ñ⁄Åistage1ÅjÇ…èâä˙âª
+		
+		pane.getChildren().add(stageChoiceBox);
 	}
 	
 	public enum TexDataColumn{
