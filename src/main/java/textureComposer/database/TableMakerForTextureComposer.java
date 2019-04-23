@@ -3,7 +3,7 @@ package textureComposer.database;
 
 public class TableMakerForTextureComposer extends SQLiteManager{
 	
-	static String dbPath = ".\\texDataBase\\texDB.db";
+	static String dbPath = ".\\texDatabase\\texDB.db";
 	
 	static String tableName;
 	
